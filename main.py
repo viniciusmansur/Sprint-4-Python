@@ -25,6 +25,19 @@ def buscarClima(lat, lon):
 def main():
     global histcount
     while True:
+        try:
+            arquivo = open("data.txt", "r+", encoding="UTF-8")
+        except:
+            arquivo = open("data.txt", "w+", encoding="UTF-8")
+            arquivo.write(input("Digite seu nome: "))
+            os.system("cls" if os.name == "nt" else "clear")
+            arquivo.seek(0)
+            print(f"Bem vindo, {arquivo.read()}")
+        else:
+            print(f"Bem vindo, {arquivo.read()}")
+        finally:
+            arquivo.close()
+
         print(f"MENU EXPLICATIVO DA CÂMERA: \n \n1. Modo pet \n2. Modo documento \n3. Modo Live Suggestions \n4. Histórico \n5. Gráficos\n6. Condições para Foto\n0. Sair")
         op = input("Digite a opção que deseja visualizar: ")
         match op:
