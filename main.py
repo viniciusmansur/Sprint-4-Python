@@ -25,6 +25,7 @@ def buscarClima(lat, lon):
 def main():
     global histcount
     while True:
+        os.system("cls" if os.name == "nt" else "clear")
         try:
             arquivo = open("data.txt", "r+", encoding="UTF-8")
         except:
@@ -38,48 +39,45 @@ def main():
         finally:
             arquivo.close()
 
-        print(f"MENU EXPLICATIVO DA CÂMERA: \n \n1. Modo pet \n2. Modo documento \n3. Modo Live Suggestions \n4. Histórico \n5. Gráficos\n6. Condições para Foto\n0. Sair")
+        print(f"MENU EXPLICATIVO DA CÂMERA: \n \n1. Modo pet \n2. Modo documento \n3. Modo Live Suggestions \n4. Histórico \n5. Gráficos\n6. Condições para Foto\n7. Configurações\n0. Sair")
         op = input("Digite a opção que deseja visualizar: ")
         match op:
             case '1':
                 histcount += 1
                 opc1()
-                os.system("cls" if os.name == "nt" else "clear") # *
 
             case '2':
                 histcount += 1
                 opc2()
-                os.system("cls" if os.name == "nt" else "clear") # *
 
             case '3':
                 histcount += 1
                 opc3()
-                os.system("cls" if os.name == "nt" else "clear") # *
 
             case '4':
                 opc4()
-                os.system("cls" if os.name == "nt" else "clear") # *
 
-            case '5': # *
+            case '5':
                 histcount += 1
-                opc5() # *
-                os.system("cls" if os.name == "nt" else "clear") # *
+                opc5()
 
             case '6':
                 histcount += 1
                 opc6()
-                os.system("cls" if os.name == "nt" else "clear")
 
+            case '7':
+                opc7()
             case '0':
                 ponto = '.'
                 for _ in range(3): # *
                     print(f"Saindo{ponto}")
-                    sleep(0.8) # *
+                    sleep(0.7) # *
                     ponto += "."
                 return
             
             case _:
                 print("Opção inválida")
+                sleep(0.8)
 
 #Função Modo pet - descrição
 def opc1():
@@ -222,5 +220,24 @@ def opc6():
         print("Visibilidade alta: sem neblina e contraste OK. Nenhuma alteração sugerida")
 
     input("\nDigite algo para voltar: ")
+
+def opc7():
+    while True:
+        os.system("cls" if os.name == "nt" else "clear")
+        print("Configurações")
+        print("1. Alterar Nome de Exibição\n0. Sair")
+        op = input("- ")
+        match op:
+            case '1':
+                arquivo = open("data.txt", "w", encoding="UTF-8")
+                arquivo.write(input("Digite seu nome: "))
+                arquivo.close()
+                print("Nome alterado com sucesso")
+                input("Digite algo para voltar: ")
+            case '0':
+                return
+            case _:
+                print("Opção inválida")
+
 
 main()
