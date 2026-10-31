@@ -1,10 +1,9 @@
-import os # *
-from time import sleep # *
+import os
+from time import sleep
 import matplotlib.pyplot as plt
 import requests
 
 historicos = []
-histcount = 0
 
 def buscarCidade(nome):
     url = "https://geocoding-api.open-meteo.com/v1/search"
@@ -19,8 +18,9 @@ def buscarCidade(nome):
         print(f"Sem conexão com a internet. (Erro: {e})")
         return None
     except Exception as e:
-        print(f"Erro encontrando ao buscar a cidade. (Erro: {e})")
-
+        print(f"Erro encontrado ao buscar a cidade. (Erro: {e})")
+        return None
+    
     resultados = dic.get("results")
     if not resultados:
         print("Cidade não encontrada")
@@ -37,10 +37,13 @@ def buscarClima(lat, lon):
         dic = resposta.json()
     except requests.exceptions.Timeout as e:
         print(f"Erro ao buscar o clima. (Erro: {e})")
+        return None
     except requests.exceptions.ConnectionError as e:
         print(f"Sem conexão com a internet. (Erro: {e})")
+        return None
     except Exception as e:
         print(f"Erro ao buscar o clima. (Erro: {e})")
+        return None
 
     if "current" not in dic:
         print("Erro")
@@ -49,7 +52,6 @@ def buscarClima(lat, lon):
     return dic
 
 def main():
-    global histcount
     while True:
         os.system("cls" if os.name == "nt" else "clear")
         try:
@@ -69,35 +71,30 @@ def main():
         op = input("Digite a opção que deseja visualizar: ")
         match op:
             case '1':
-                histcount += 1
                 opc1()
 
             case '2':
-                histcount += 1
                 opc2()
 
             case '3':
-                histcount += 1
                 opc3()
 
             case '4':
                 opc4()
 
             case '5':
-                histcount += 1
                 opc5()
 
             case '6':
-                histcount += 1
                 opc6()
 
             case '7':
                 opc7()
             case '0':
                 ponto = '.'
-                for _ in range(3): # *
+                for _ in range(3):
                     print(f"Saindo{ponto}")
-                    sleep(0.7) # *
+                    sleep(0.7)
                     ponto += "."
                 return
             
@@ -107,7 +104,7 @@ def main():
 
 #Função Modo pet - descrição
 def opc1():
-    os.system("cls" if os.name == "nt" else "clear") # *
+    os.system("cls" if os.name == "nt" else "clear")
     historicos.append("Modo Pet")
     print("Modo Pet:")
     print("Esse modo é focado em tirar fotos de forma automática de pets assim que a câmera for estabilizada e reconhecer o animal.")
@@ -115,15 +112,15 @@ def opc1():
 
 #Função Modo documento - descrição
 def opc2():
-    os.system("cls" if os.name == "nt" else "clear") # *
+    os.system("cls" if os.name == "nt" else "clear")
     historicos.append("Modo Documento")
     print("Modo Documento:")
-    print("Esse modo escaneia textos e os envias para a área de transferencia do celular.")
+    print("Esse modo escaneia textos e os envia para a área de transferência do celular.")
     input("Digite algo para voltar: ")
 
 #Função Modo live suggestions - descrição
 def opc3():
-    os.system("cls" if os.name == "nt" else "clear") # *
+    os.system("cls" if os.name == "nt" else "clear")
     historicos.append("Modo Live Suggestions")
     print("Modo Live Suggestions:")
     print("Esse modo analisa a cena atual e sugere quais alterações nas configurações da câmera seriam ideais para aquela ocasião.")
@@ -132,20 +129,21 @@ def opc3():
 #Função Histórico - mostra a histórico
 def opc4():
     barra = '-------------------------'
-    os.system("cls" if os.name == "nt" else "clear") # *
+    os.system("cls" if os.name == "nt" else "clear")
+    histcount = len(historicos)
     print("Seu histórico: ")
     print("Você acessou 1 modo." if histcount == 1 else f"Você acessou {histcount} modos.")
     print(barra)
 
     print(f"Histórico: ", end='')
-    for i in historicos: # *
+    for i in historicos:
         print(i, end=' | ')
 
     print(f"\n{barra}")
     input("Digite algo para voltar: ")
 
 def opc5():
-    os.system("cls" if os.name == "nt" else "clear") # *
+    os.system("cls" if os.name == "nt" else "clear")
     historicos.append("Gráficos")
     while True:
         print("\nGRÁFICOS DA PESQUISA: \n1. Aceitação dos modos\n2. Modo Documento por faixa etária\n3. Aceitação do Live Suggestions\n4. Aceitação do Modo Pet\n0. Voltar")
