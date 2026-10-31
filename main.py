@@ -9,17 +9,43 @@ histcount = 0
 def buscarCidade(nome):
     url = "https://geocoding-api.open-meteo.com/v1/search"
     params = {"name": nome, "count": 1, "language": "pt", "countryCode": "BR"}
-    resposta = requests.get(url, params=params, timeout=10)
-    dic = resposta.json()
+    try: 
+        resposta = requests.get(url, params=params, timeout=10)
+        dic = resposta.json()
+    except requests.exceptions.Timeout as e:
+        print(f"Erro ao buscar a cidade. (Erro: {e})")
+        return None
+    except requests.exceptions.ConnectionError as e:
+        print(f"Sem conexão com a internet. (Erro: {e})")
+        return None
+    except Exception as e:
+        print(f"Erro encontrando ao buscar a cidade. (Erro: {e})")
+
     resultados = dic.get("results")
+    if not resultados:
+        print("Cidade não encontrada")
+        return None
+    
     cidade = resultados[0]
     return cidade["latitude"], cidade["longitude"]
 
 def buscarClima(lat, lon):
     url = "https://api.open-meteo.com/v1/forecast"
     params = {"latitude": lat, "longitude": lon, "current": "cloud_cover,uv_index,precipitation,visibility,wind_gusts_10m", "daily": "sunrise,sunset,uv_index_max", "timezone": "auto", "forecast_days": 1}
-    resposta = requests.get(url, params=params, timeout=10)
-    dic = resposta.json()
+    try: 
+        resposta = requests.get(url, params=params, timeout=10)
+        dic = resposta.json()
+    except requests.exceptions.Timeout as e:
+        print(f"Erro ao buscar o clima. (Erro: {e})")
+    except requests.exceptions.ConnectionError as e:
+        print(f"Sem conexão com a internet. (Erro: {e})")
+    except Exception as e:
+        print(f"Erro ao buscar o clima. (Erro: {e})")
+
+    if "current" not in dic:
+        print("Erro")
+        return None
+    
     return dic
 
 def main():
